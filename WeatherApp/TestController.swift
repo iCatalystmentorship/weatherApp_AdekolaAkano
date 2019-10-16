@@ -23,8 +23,15 @@ class TestController: UIViewController {
         
         view.addSubview(views: imageImg, textLb)
         
-        imageImg.alignTopToParentTop(by: 100)
-        imageImg.setDimensions(height: 10, width: 10)
+        imageImg.alignTopToParentTop(by: 300)
+        view.alignHorizontal(views: imageImg)
+
+//        imageImg.setDimensions(height: 100, width: 100)
+        
+        view.addConstraints(formats: ["V:[v0(100)]", "H:[v0(100)]"], views: imageImg)
+        
+//        textLb.alignEndToStartOf(of: imageImg, by: 0)
+        textLb.alignToCenterVertical(of: imageImg, by: 0)
     }
     
     lazy var imageImg:UIImageView = {
