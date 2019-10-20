@@ -19,6 +19,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         navigationController?.isNavigationBarHidden = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -40,7 +44,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         segmentsVw.alignTopToBottomOf(of: weatherDetailsLb, by: 40)
         view.alignHorizontal(views: segmentsVw)
-        
+//        segmentsVw.setDimensions(height: 200, width: 200)
+      
         let _3Lb = getLabel("3", view)
         let _6Lb = getLabel("6", view)
         let _9Lb = getLabel("9", view)
@@ -57,6 +62,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         _3Lb.alignStartToEndOf(of: segmentsVw, by: 5)
         _3Lb.alignToCenterVertical(of: segmentsVw)
+        
+        
     }
     
 //    lazy var _9Lb:UILabel = {
@@ -216,7 +223,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     lazy var topSv:UIStackView = {
         let stackView = UIStackView()
-//        stackView.addBackground(color: .red)
         stackView.axis = .horizontal
 //        stackView.alignment = .center
         stackView.spacing = 20
@@ -302,12 +308,39 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     lazy var segmentsVw:UIView = {
         let view = UIView()
-//        view.addConstraints(formats: ["V:|-1-[v0]-1-|", "H:|-1-[v0]-1-|"], view: segmentsSv)
         view.addConstraints(formats: ["V:|-30-[v0]-30-|", "H:|-55-[v0]-55-|"], view: segmentsSv)
-
-        view.layer.cornerRadius = (segmentsSv.bounds.width+220)/2
-        view.layer.borderWidth = 2
-        view.layer.borderColor = UIColor.customOrange.cgColor
+//        view.backgroundColor = .red
+       
+        
+        let centerPoint = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        //        let centerPoint = view.center;
+        let radius = CGFloat(100)
+        
+        let trackLayerbBezierPath = UIBezierPath(arcCenter: centerPoint, radius: radius, startAngle: -CGFloat.pi/2, endAngle: CGFloat.pi*2, clockwise: true)
+        
+        let segmentLayerBezierPath = UIBezierPath(arcCenter: centerPoint , radius: radius, startAngle: CGFloat.pi/2, endAngle: CGFloat.pi, clockwise: true)
+        
+        let trackLayer = CAShapeLayer()
+        trackLayer.path = trackLayerbBezierPath.cgPath
+        trackLayer.strokeColor = UIColor.rgb(245, 126, 115, 0.4).cgColor
+        trackLayer.lineWidth = 10
+        trackLayer.fillColor = UIColor.clear.cgColor
+        trackLayer.lineCap = CAShapeLayerLineCap.round
+//        trackLayer.contentsGravity = CALayerContentsGravity.center
+        
+        let segmentLayer = CAShapeLayer()
+        segmentLayer.path = segmentLayerBezierPath.cgPath
+        segmentLayer.strokeColor = UIColor.customOrange.cgColor
+        segmentLayer.lineWidth = 10
+        segmentLayer.fillColor = UIColor.clear.cgColor
+        segmentLayer.lineCap = CAShapeLayerLineCap.round
+//        segmentLayer.contentsGravity = CALayerContentsGravity.center
+        
+//        segmentLayer.bounds = view.bounds;
+//        trackLayer.bounds = view.bounds;
+        
+        view.layer.addSublayer(trackLayer)
+        view.layer.addSublayer(segmentLayer)
         
         return view
     }()
