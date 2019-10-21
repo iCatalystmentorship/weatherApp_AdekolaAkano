@@ -27,7 +27,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         view.backgroundColor = UIColor.white
-        view.addSubview(views: locationLb, topSv, weatherDetailsLb, collectioView, segmentsVw, textLb)
+        view.addSubview(views: locationLb, topSv, weatherDetailsLb, collectioView, segmentsVw)
         
         locationLb.alignTopToParentTop(by: 50)
         
@@ -66,28 +66,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
     }
     
-//    lazy var _9Lb:UILabel = {
+//    lazy var textLb:UILabel = {
 //        let label = UILabel()
-//        label.text = "9"
+//        label.text = "ST"
 //        label.translatesAutoresizingMaskIntoConstraints = false
 //        label.textColor = .customOrange
-//        label.font = UIFont.systemFont(ofSize: 13)
-//        return label
-//    }()
-    
-    lazy var textLb:UILabel = {
-        let label = UILabel()
-        label.text = "ST"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .customOrange
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        return label
-    }()
-//    lazy var tLabel:UILabel={
-//        let label = UILabel()
-//        label.text = "text"
-//        label.font = UIFont.systemFont(ofSize: 13)
-//        label.textColor = .customOrange
+//        label.font = UIFont.boldSystemFont(ofSize: 20)
 //        return label
 //    }()
     
@@ -264,57 +248,57 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     lazy var topSegmentsSv:UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 10
-
-        let segmentDivider = UIView()
-        segmentDivider.backgroundColor = .black
-        segmentDivider.setWidth(width: 1)
-        
-//        stackView.distribution = .fillProportionally
+//        stackView.spacing = 20
+//        stackView.distribution = .fillEqually
+//        stackView.addBackground(color: .red)
+//        case fill
+//
+//
+//        case fillEqually
+//
+//
+//        case fillProportionally
+//
+//
+//        case equalSpacing
+//
+//
+//        case equalCentering
         stackView.addArrangedSubview(views: getSegmentLb("15","Mostly Cloudy", #imageLiteral(resourceName: "cloud"), true), getSegmentLb("12","Mostly Cloudy", #imageLiteral(resourceName: "cloud"), true))
-        stackView.spacing = 5
         return stackView
     }()
     
     lazy var bottomSegmentsSv:UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 10
+//        stackView.spacing = 20
+//        stackView.distribution = .fillEqually
+//        stackView.addBackground(color: .blue)
 
-        let segmentDivider = UIView()
-        segmentDivider.backgroundColor = .black
-        segmentDivider.setWidth(width: 1)
-        
-//        stackView.distribution = .fillProportionally
         stackView.addArrangedSubview(views: getSegmentLb("15","Mostly Cloudy", #imageLiteral(resourceName: "cloud"), false), getSegmentLb("12","Mostly Cloudy", #imageLiteral(resourceName: "cloud"), false))
-        stackView.spacing = 5
         return stackView
     }()
     
     lazy var segmentsSv:UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 10
+//        stackView.spacing = 1
         
-        
-        let segmentDivider = UIView()
-        segmentDivider.backgroundColor = .black
-        segmentDivider.setHeight(height: 1)
-        
-        stackView.distribution = .fill
-        stackView.addArrangedSubview(views: topSegmentsSv, segmentDivider, bottomSegmentsSv)
+        stackView.addArrangedSubview(views: topSegmentsSv, bottomSegmentsSv)
         return stackView
     }()
     
     lazy var segmentsVw:UIView = {
         let view = UIView()
-        view.addConstraints(formats: ["V:|-30-[v0]-30-|", "H:|-55-[v0]-55-|"], view: segmentsSv)
+        view.frame = CGRect(x: 0, y: 0, width: 120, height: 120)
+
+        view.addConstraints(formats: ["V:|-40-[v0(160)]-40-|", "H:|-40-[v0(160)]-40-|"], view: segmentsSv)
 //        view.backgroundColor = .red
        
         
-        let centerPoint = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
-        //        let centerPoint = view.center;
-        let radius = CGFloat(100)
+//        let centerPoint = CGPoint(x: view.bounds.midX, y: view.bounds.midY)
+        let centerPoint = view.center;
+        let radius = CGFloat(120)
         
         let trackLayerbBezierPath = UIBezierPath(arcCenter: centerPoint, radius: radius, startAngle: -CGFloat.pi/2, endAngle: CGFloat.pi*2, clockwise: true)
         
@@ -322,26 +306,43 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         
         let trackLayer = CAShapeLayer()
         trackLayer.path = trackLayerbBezierPath.cgPath
-        trackLayer.strokeColor = UIColor.rgb(245, 126, 115, 0.4).cgColor
-        trackLayer.lineWidth = 10
+        trackLayer.strokeColor = UIColor.rgb(245, 126, 115, 0.1).cgColor
+        trackLayer.lineWidth = 3
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.lineCap = CAShapeLayerLineCap.round
 //        trackLayer.contentsGravity = CALayerContentsGravity.center
-        
+        trackLayer.position = view.center
+
         let segmentLayer = CAShapeLayer()
         segmentLayer.path = segmentLayerBezierPath.cgPath
         segmentLayer.strokeColor = UIColor.customOrange.cgColor
-        segmentLayer.lineWidth = 10
+        segmentLayer.lineWidth = 3
         segmentLayer.fillColor = UIColor.clear.cgColor
         segmentLayer.lineCap = CAShapeLayerLineCap.round
 //        segmentLayer.contentsGravity = CALayerContentsGravity.center
-        
+        segmentLayer.position = view.center
+
 //        segmentLayer.bounds = view.bounds;
 //        trackLayer.bounds = view.bounds;
         
         view.layer.addSublayer(trackLayer)
         view.layer.addSublayer(segmentLayer)
         
+        
+        let verticalSegmentDivider = UIView()
+        verticalSegmentDivider.backgroundColor = UIColor.rgb(230, 230, 230)
+        verticalSegmentDivider.setHeight(height: 1)
+        
+        let horizontalSegmentDivider = UIView()
+        horizontalSegmentDivider.backgroundColor = UIColor.rgb(230, 230, 230)
+        horizontalSegmentDivider.setWidth(width: 1)
+        
+        view.addConstraints(format: "H:|-35-[v0]-35-|", views: verticalSegmentDivider)
+        view.alignVertical(views: verticalSegmentDivider)
+        
+        view.addConstraints(format: "V:|-20-[v0]-20-|", views: horizontalSegmentDivider)
+        view.alignHorizontal(views: horizontalSegmentDivider)
+
         return view
     }()
     
@@ -372,6 +373,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             mutableString.append(nextLineAttr)
             mutableString.append(temperatureAttr)
             mutableString.append(NSAttributedString(attachment: degreeImgAttachment))
+//            label.backgroundColor = .green
         }else{
             mutableString.append(temperatureAttr)
             mutableString.append(NSAttributedString(attachment: degreeImgAttachment))
@@ -379,6 +381,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             mutableString.append(NSAttributedString(attachment: imageAttachment))
             mutableString.append(nextLineAttr)
             mutableString.append(descriptionAttr)
+//            label.backgroundColor = .gray
         }
         
         label.numberOfLines = 3
